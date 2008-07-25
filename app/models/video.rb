@@ -15,6 +15,8 @@ class Video < ActiveRecord::Base
 
   def after_find
     @ankoder_video = Ankoder::Video.find video_id
+  rescue
+    @ankoder_video = Ankoder::Video.new :thumb => ''
   end
 
   def thumbnail
