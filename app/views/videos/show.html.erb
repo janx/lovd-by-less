@@ -1,0 +1,18 @@
+<h1><%= @video.name %></h1>
+<div id="player"></div>
+
+<script type='text/javascript'>
+  flashembed("player",
+    {
+      src:'/resources/FlowPlayerDark.swf',
+      width:400,
+      height:290
+    },
+    {config: {
+        autoPlay:false,
+        autoBuffering:true,
+        initialScale:'scale',
+        videoFile: 'http://blip.tv/file/get/N8inpasadena-Flowers457.flv'
+    }}
+  );
+</script>

@@ -13,7 +13,8 @@ class VideosController < ApplicationController
   end
 
   def show
-    redirect_to profile_videos_path(@profile)
+    @video = Video.find params[:id]
+    render :layout => false
   end
 
   def create
@@ -46,7 +47,6 @@ class VideosController < ApplicationController
   def setup
     @user = @profile.user
     @videos = @profile.videos.paginate(:all, :page => @page, :per_page => @per_page)
-    @video = Video.new
   end
 
 end
