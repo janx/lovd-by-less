@@ -31,6 +31,12 @@ class VideosController < ApplicationController
     render :text => nil, :layout => false
   end
 
+  def destroy
+    @video = Video.find params[:id]
+    @video.destroy
+    render :text => nil, :layout => false
+  end
+
   private
 
   def get_profile
