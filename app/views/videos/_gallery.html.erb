@@ -1,0 +1,59 @@
+<%-
+# Locals
+mini ||= false
+profile ||= @profile
+videos ||= @videos
+
+if mini
+  size ||= 8
+  videos = profile.videos.find :all, :limit => size
+  total = profile.videos.count -%>
+
+  <%- unless videos.empty? -%>
+  <div class="activity_box" id="video">
+    <h2>Videos</h2>
+    <div id="videos" class="inside_box">
+      <% videos.each do |picture|%>
+      <div class="image left">
+        <div>
+          <%= link_to image(picture, :small), profile_videos_path(picture.profile) %>
+        </div>
+      </div>
+      <% end %>
+    </div>
+  </div>
+  <%- end -%>	
+
+  <%- else -%>
+
+  <div class="left" id="column_l">	
+    <h1><%= icon profile %> <%= "#{profile.f}'s Videos" %></h1>
+
+    <div id="sub_nav">
+      <%= link_to '&larr; Back to Dashboard', profile_path(profile) if me %>
+      <%= link_to "&larr; Back to #{h profile.f}'s profile", profile_path(profile) unless me %> 
+    </div>	
+    <div id="video_wall">
+      <%= render :partial => 'video', :collection => @videos %>
+
+      <div class="clear"></div>
+    </div>
+    <%= will_paginate @videos %>
+
+    <div class="clear"></div>
+  </div>
+
+  <div class="right" id="column_r">
+    <% if me %>
+    <div class="right upload_form activity_box">
+      <%= render :partial => 'form' %>
+    </div>
+    <% end %>
+
+  </div>
+
+
+
+  <%- end -%>
+
+

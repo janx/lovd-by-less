@@ -1,0 +1,51 @@
+AnkoderOnRails
+==============
+
+This plugin connects to the Ankoder API for the online video converting service.
+A working demo is here - http://free.ankoder.com
+
+Example
+
+Get authorization to Ankoder API
+
+  ankoder = Ankoder::Auth.create("your_api_username", "your_api_password")
+
+By get the Ankoder object, you can do the following operation
+
+Get the supported video format
+
+  >>ankoder.profiles.find(:all)
+
+  => [#<Ankoder::Profile:0x2af7971f28e0 @attributes={"video_codec"=>"h263", "name"=>"Mobile (3gp)", 
+     "audio_rate"=>8000, "video_bitrate"=>300.0, "audio_channel"=>1, "video_format"=>"3gp", "id"=>5, 
+     "audio_codec"=>"libamr_nb", "height"=>144, "created_at"=>Thu Feb 07 08:07:18 +0000 2008, "width"=>176}>]
+
+Download the video from url link 
+
+  >>download = ankoder.downloads.create('url' => 'http://host.com/file.avi', :postback_url => 'http://your_own_host.com/postback/download')
+
+  => #<Ankoder::Download:0x2af7971bacb0 @attributes={"name"=>nil, "specs"=>{"audio"=>{"codec"=>""}, "size"=>nil, "spec"=>{"content_type"=>"", 
+     "codec"=>"", "height"=>"", "fps"=>"", "width"=>""}}, "id"=>1477, "progress"=>nil, "created_at"=>Thu Feb 21 06:29:36 +0000 2008}>
+
+  download.id is equal to the Video id 
+
+  if provided the postback_url, when download completed, will 
+
+Convert a downloaded video into different format
+
+   Video_ID is the video id that get from Ankoder::Download
+   Profile_ID is selected from the list of Ankoder::Profile.find(:all) or ankoder.profiles.find(:all)
+
+   >>@job = ankoder.jobs.create(:original_file_id => "Video_ID", :profile_id => "Profile_ID", 
+              :postback_url => 'http://your_own_host.com/postback/job')
+
+   
+
+
+
+
+
+
+
+
+Copyright (c) 2008 RoRCraft, released under the MIT license

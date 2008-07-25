@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  profile_id: 1
+  description: MyText
+  rate: 1.5
+  watched: 1
+  public: false
+
+two:
+  name: MyString
+  profile_id: 1
+  description: MyText
+  rate: 1.5
+  watched: 1
+  public: false

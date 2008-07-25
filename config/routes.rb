@@ -4,9 +4,7 @@ ActionController::Routing::Routes.draw do |map|
     a.resources :users, :collection => {:search => :post}
   end
 
-  map.resources :profiles, 
-  :member=>{:delete_icon=>:post}, :collection=>{:search=>:get}, 
-  :has_many=>[:friends, :blogs, :photos, :comments, :feed_items, :messages]
+  map.resources :profiles, :member=>{:delete_icon=>:post}, :collection=>{:search=>:get}, :has_many => [:friends, :blogs, :photos, :videos, :comments, :feed_items, :messages]
 
   map.resources :messages, :collection => {:sent => :get}
   map.resources :blogs do |blog|

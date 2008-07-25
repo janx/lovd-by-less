@@ -1,0 +1,21 @@
+<div id="upload_a_video">
+  <h2>Upload A Video</h2>
+
+  <% form_tag @upload_url, :enctype => "multipart/form-data" do %>
+    <%= hidden_field_tag :success_redirect, "http://60.177.207.139:3000#{profile_videos_path(@p)}" %>
+    <%= hidden_field_tag :failed_redirect,  "http://60.177.207.139:3000" %>
+    <%= hidden_field_tag :postback_url, "http://60.177.207.139:3000#{profile_videos_path(@p)}" %>
+    <%= hidden_field_tag :access_key, Ankoder::Configuration::access_key %>
+    <p>
+    <label for="video[filename]">Title:(optional)</label>
+    <%= text_field_tag "video[filename]" %>
+    </p>
+    <p>
+    <label for="file">File:</label>
+    <%= file_field_tag "file" %>
+    </p>
+    <%= submit_tag "Upload" %>
+  <% end %>
+
+  <div class="clear"></div>
+</div>

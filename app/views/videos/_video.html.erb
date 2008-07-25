@@ -1,0 +1,14 @@
+<% 
+#locals
+video ||= wall
+video ||= @video
+%>
+
+<div class="left image">
+	<div>
+          <a href="<%= profile_video_path(video.profile, video) %>" title="<%= video.name %>" alt="<%= video.name %>" class="thickbox" rel="user_gallery">
+            <%= image_tag video.thumbnail, :alt => video.name %>
+          </a>
+	</div>
+	<%= link_to '(delete)', profile_video_path(video.profile, video), :method => :delete if me %>
+</div>

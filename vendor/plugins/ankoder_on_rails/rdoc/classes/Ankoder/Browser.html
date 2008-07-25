@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: Ankoder::Browser</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">Ankoder::Browser</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../files/lib/ankoder/browser_rb.html">
+                lib/ankoder/browser.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                Object
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+This class is used to request the _ankoderapi_session service.
+</p>
+<pre>
+  Browser::get '/video', session
+  Browser::post '/download', {:url =&gt; 'http://host.com/video.avi'}, session
+  Browser::put '/video/54000', {:name =&gt; 'new title'}, session
+  Browser::delete '/video/54000', session
+</pre>
+
+    </div>
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000030">delete</a>&nbsp;&nbsp;
+      <a href="#M000027">get</a>&nbsp;&nbsp;
+      <a href="#M000028">post</a>&nbsp;&nbsp;
+      <a href="#M000029">put</a>&nbsp;&nbsp;
+      <a href="#M000026">raise_if_response_error</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Class methods</h3>
+
+      <div id="method-M000030" class="method-detail">
+        <a name="M000030"></a>
+
+        <div class="method-heading">
+          <a href="#M000030" class="method-signature">
+          <span class="method-name">delete</span><span class="method-args">(path, session=nil)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+DELETE on path
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000030-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000030-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ankoder/browser.rb, line 65</span>
+65:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">delete</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">session</span>=<span class="ruby-keyword kw">nil</span>)
+66:         <span class="ruby-identifier">res</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>.<span class="ruby-identifier">start</span>(<span class="ruby-constant">HOST</span>) {<span class="ruby-operator">|</span><span class="ruby-identifier">http</span><span class="ruby-operator">|</span> <span class="ruby-identifier">http</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">path</span><span class="ruby-operator">+</span><span class="ruby-value str">&quot;.&quot;</span><span class="ruby-operator">+</span><span class="ruby-constant">OUT_FORMAT</span>, <span class="ruby-identifier">header</span>(<span class="ruby-identifier">session</span>))}
+67:         <span class="ruby-identifier">raise_if_response_error</span>(<span class="ruby-identifier">res</span>)
+68:         <span class="ruby-keyword kw">true</span>
+69:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000027" class="method-detail">
+        <a name="M000027"></a>
+
+        <div class="method-heading">
+          <a href="#M000027" class="method-signature">
+          <span class="method-name">get</span><span class="method-args">(path, session=nil)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+GET on path
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000027-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000027-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ankoder/browser.rb, line 41</span>
+41:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">session</span>=<span class="ruby-keyword kw">nil</span>)
+42:         <span class="ruby-identifier">path</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;.#{OUT_FORMAT}&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">path</span>.<span class="ruby-identifier">include?</span> <span class="ruby-value str">&quot;.&quot;</span>
+43:         <span class="ruby-identifier">res</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>.<span class="ruby-identifier">start</span>(<span class="ruby-constant">HOST</span>) {<span class="ruby-operator">|</span><span class="ruby-identifier">http</span><span class="ruby-operator">|</span> <span class="ruby-identifier">http</span>.<span class="ruby-identifier">get</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">header</span>(<span class="ruby-identifier">session</span>))}
+44:         <span class="ruby-identifier">raise_if_response_error</span>(<span class="ruby-identifier">res</span>)
+45:         <span class="ruby-identifier">res</span>
+46:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000028" class="method-detail">
+        <a name="M000028"></a>
+
+        <div class="method-heading">
+          <a href="#M000028" class="method-signature">
+          <span class="method-name">post</span><span class="method-args">(path, query={}, session=nil)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+POST on path and pass the query(<a href="../Hash.html">Hash</a>)
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000028-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000028-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ankoder/browser.rb, line 49</span>
+49:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">post</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">query</span>={}, <span class="ruby-identifier">session</span>=<span class="ruby-keyword kw">nil</span>)
+50:         <span class="ruby-identifier">res</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>.<span class="ruby-identifier">start</span>(<span class="ruby-constant">HOST</span>) {<span class="ruby-operator">|</span><span class="ruby-identifier">http</span><span class="ruby-operator">|</span> <span class="ruby-identifier">http</span>.<span class="ruby-identifier">post</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">query</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">:format</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">OUT_FORMAT</span>).<span class="ruby-identifier">to_a</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span> <span class="ruby-identifier">x</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">&quot;=&quot;</span>)}.<span class="ruby-identifier">join</span>(<span class="ruby-value str">&quot;&amp;&quot;</span>), <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">header</span>(<span class="ruby-identifier">session</span>))}
+51:         <span class="ruby-identifier">raise_if_response_error</span>(<span class="ruby-identifier">res</span>)
+52:         <span class="ruby-identifier">res</span>
+53:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000029" class="method-detail">
+        <a name="M000029"></a>
+
+        <div class="method-heading">
+          <a href="#M000029" class="method-signature">
+          <span class="method-name">put</span><span class="method-args">(path, query={}, session=nil)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+PUT on path and pass the query(<a href="../Hash.html">Hash</a>)
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000029-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000029-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ankoder/browser.rb, line 56</span>
+56:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">put</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">query</span>={}, <span class="ruby-identifier">session</span>=<span class="ruby-keyword kw">nil</span>)
+57:         <span class="ruby-identifier">req</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span><span class="ruby-operator">::</span><span class="ruby-constant">Put</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">header</span>(<span class="ruby-identifier">session</span>))
+58:         <span class="ruby-identifier">req</span>.<span class="ruby-identifier">form_data</span> = <span class="ruby-identifier">query</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">:format</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">OUT_FORMAT</span>)
+59:         <span class="ruby-identifier">res</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">HOST</span>).<span class="ruby-identifier">start</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">http</span><span class="ruby-operator">|</span> <span class="ruby-identifier">http</span>.<span class="ruby-identifier">request</span>(<span class="ruby-identifier">req</span>) }
+60:         <span class="ruby-identifier">raise_if_response_error</span>(<span class="ruby-identifier">res</span>)
+61:         <span class="ruby-keyword kw">true</span>
+62:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000026" class="method-detail">
+        <a name="M000026"></a>
+
+        <div class="method-heading">
+          <a href="#M000026" class="method-signature">
+          <span class="method-name">raise_if_response_error</span><span class="method-args">(res)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Raise when code response != 2xx
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000026-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000026-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/ankoder/browser.rb, line 13</span>
+13:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">raise_if_response_error</span>(<span class="ruby-identifier">res</span>)
+14:         <span class="ruby-identifier">code</span> = <span class="ruby-identifier">res</span>.<span class="ruby-identifier">response</span>.<span class="ruby-identifier">code</span>.<span class="ruby-identifier">to_i</span>
+15:         <span class="ruby-identifier">message</span> = <span class="ruby-identifier">res</span>.<span class="ruby-identifier">response</span>.<span class="ruby-identifier">message</span>
+16:         <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">code</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/^2/</span>
+17:         
+18:         <span class="ruby-identifier">raise</span> <span class="ruby-constant">RequestError</span>, <span class="ruby-constant">Ankoder</span><span class="ruby-operator">::</span><span class="ruby-identifier">response</span>(<span class="ruby-identifier">res</span>.<span class="ruby-identifier">body</span>).<span class="ruby-identifier">content</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">code</span> <span class="ruby-operator">==</span> <span class="ruby-value">400</span>
+19:         <span class="ruby-identifier">raise</span> <span class="ruby-constant">NotAuthorized</span>, <span class="ruby-identifier">message</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">code</span> <span class="ruby-operator">==</span> <span class="ruby-value">401</span>
+20:         <span class="ruby-identifier">raise</span> <span class="ruby-constant">ResourceNotFound</span>, <span class="ruby-identifier">message</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">code</span> <span class="ruby-operator">==</span> <span class="ruby-value">404</span>
+21:         <span class="ruby-identifier">raise</span> <span class="ruby-constant">ServerError</span>, <span class="ruby-identifier">message</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">code</span> <span class="ruby-operator">==</span> <span class="ruby-value">500</span>
+22:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

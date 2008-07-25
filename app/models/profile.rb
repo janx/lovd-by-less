@@ -65,6 +65,9 @@ class Profile < ActiveRecord::Base
   
   # Photos
   has_many :photos, :order => 'created_at DESC'
+
+  # Videos
+  has_many :videos, :order => 'created_at DESC'
   
   #Forums
   has_many :forum_posts, :foreign_key => 'owner_id', :dependent => :destroy
@@ -115,8 +118,8 @@ class Profile < ActiveRecord::Base
       :include => :user,
       :conditions => ["is_active = ? and about_me IS NOT NULL and user_id is not null", true],
     }
-#    find(:first, find_options.merge(:offset => rand( count(find_options) - 1)))
-    find(:first, find_options.merge(:offset => rand(count(find_options)).floor)) 
+    all = find(:all)
+    all[rand(all.size)]
   end  
   
   def no_data?

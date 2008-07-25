@@ -1,2 +1,194 @@
-Use this README file to introduce your application and point to useful places in the API for learning more.
-Run "rake appdoc" to generate API documentation for your models and controllers.
+=Integration With LoveByLess=
+
+LoveByLess is an opensource SNS framework. We can easily integrate Ankoder with it, make it more fun.
+
+==Download and Install LoveByLess=
+
+==Install Ankoder Plugin==
+
+==Create Video Model==
+
+{{{
+script/generate model video name:string description:text public:boolean location:string profile_id:integer
+}}}
+
+Modify app/model/profile.rb, add:
+
+{{{
+has_many :videos, :order => 'created_at DESC'
+}}}
+
+Modify app/model/video.rb:
+
+{{{
+class Video < ActiveRecord::Base
+  has_many :comments, :as => :commentable, :dependent => :destroy, :order => 'created_at ASC'
+
+  belongs_to :profile
+
+  validates_presence_of :name, :profile_id
+
+  file_column :location
+    
+  def after_create
+    feed_item = FeedItem.create(:item => self)
+    ([profile] + profile.friends + profile.followers).each{ |p| p.feed_items << feed_item }
+  end
+
+end
+}}}
+
+==Create Video Controller==
+
+{{{
+script/generate controller videos
+}}}
+
+Modify app/controller/videos_controller:
+
+{{{
+class VideosController < ApplicationController
+  skip_filter :login_required
+  prepend_before_filter :get_profile
+  before_filter :setup
+  
+  def index
+    respond_to do |want|
+      want.html
+      want.rss {render :layout => false}
+    end
+  end
+
+  def show
+    redirect_to profile_videos_path(@profile)
+  end
+
+  def create
+    @video = @p.videos.build params[:video]
+
+    respond_to do |wants|
+      if @video.save
+        wants.html do
+          flash[:notice] = 'Video successfully uploaded'
+          redirect_to profile_videos_path(@p)
+        end
+      else
+        wants.html do
+          flash.now[:error] = 'Video could not be uploaded'
+          render :action => :index
+        end
+      end
+    end
+  end
+
+  private
+
+  def get_profile
+    @profile = Profile[params[:profile_id] || params[:id]]
+  end
+  
+  def setup
+    @user = @profile.user
+    @videos = @profile.videos.paginate(:all, :page => @page, :per_page => @per_page)
+    @video = Video.new
+  end
+
+end
+}}}
+
+==Create HTML Views for Video Controller==
+
+Create app/views/videos/index.html.erb:
+
+{{{
+<% content_for :head do  -%> 
+<%= auto_discovery_link_tag :rss, formatted_profile_videos_url(@profile, :rss), :title=>"#{@profile.f}'s Videos" %>
+<% end -%> 
+
+<%= render :partial => 'videos/gallery' %>
+}}}
+
+Create app/views/videos/index.rss.builder:
+
+{{{
+xml.instruct! :xml, :version=>"1.0"
+xml.rss(:version=>"2.0") do
+  xml.channel do
+    xml.title "#{@profile.f}'s Blog"
+    xml.link SITE
+    xml.description "#{@profile.f}'s Blog at #{SITE_NAME}"
+    xml.language 'en-us'
+    @videos.each do |video|
+      xml.item do
+        xml.title "Video"
+        xml.description "<a href=\"#{profile_video_url(@profile, video)}\" title=\"#{video.caption}\" alt=\"#{video.caption}\" class=\"thickbox\" rel=\"user_gallery\">#{image video, :small}</a>" + video.caption
+        xml.author "#{@profile.f}"
+        xml.pubDate @profile.created_at
+        xml.link profile_video_url(@profile, video)
+        xml.guid profile_video_url(@profile, video)
+      end                                   
+    end                                     
+  end
+end
+}}}
+
+Create app/views/videos/_gallery.html.erb:
+
+{{{
+<h1>Videos</h1>
+}}}
+
+Create app/views/videos/_form.html.erb:
+
+{{{
+<div id="upload_a_video">
+  <h2>Upload A Video</h2>
+
+  <% less_form_for [@p,@video], :html => {:multipart=>true} do |f| %>
+        <%= f.wrap(:image, :label => 'Video: '){file_column_field "video", "location", :size => 15} %>
+        <%= f.text_field :name %>
+        <%= f.text_area :description %>
+    
+        <div class="row button">
+        <%= f.submit 'Upload Video', :class=>"button" %>
+        </div>
+  <% end %>
+
+  <div class="clear"></div>
+</div>
+}}}
+
+Create app/views/video/_video.html.erb:
+
+{{{
+<% 
+#locals
+video ||= wall
+video ||= @video
+%>      
+        
+<div class="left image">
+        <div>
+        <a href="<%= profile_video_path(video.profile, video) %>" title="<%= video.name %>" alt="<%= video.name %>" class="thickbox" rel="user_gallery"><%= video.name %></a>
+        </div>
+        <%= link_to '(delete)', profile_video_path(video.profile, video), :method => :delete if me %>
+</div>
+}}}
+
+==Edit Profile Views==
+
+Modify app/views/profiles/_private.html.erb, add this line:
+
+{{{
+<%= link_to 'Manage Videos', profile_videos_path(@p) %>
+}}}
+
+==Add Video Resource==
+
+Modify config/routes.rb, add :photos in profiles resource:
+
+{{{
+  map.resources :profiles, 
+  :member=>{:delete_icon=>:post}, :collection=>{:search=>:get}, 
+  :has_many=>[:friends, :blogs, :photos, :videos, :comments, :feed_items, :messages]
+}}}

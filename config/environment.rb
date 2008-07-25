@@ -8,8 +8,8 @@ Rails::Initializer.run do |config|
   
   # Cookie sessions (limit = 4K)
   config.action_controller.session = {
-    :session_key => '_your_app_name',
-    :secret      => 'make a secure key here'
+    :session_key => '__lovebyless__',
+    :secret      => 'sdsoifjsof0293urj8920j3r02cm9m9308m2309485m294305'
   }
   config.action_controller.session_store = :active_record_store
 
@@ -34,7 +34,7 @@ Rails::Initializer.run do |config|
   config.gem 'hpricot', :version=>"0.6"
   config.gem 'mocha', :version=>"0.5.6"
   config.gem 'redgreen', :version=>"1.2.2"
-  config.gem 'gcnovus-avatar', :version=>"0.0.7", :lib => 'avatar'
+  config.gem 'avatar', :version=>"0.0.5"
   
   
   
