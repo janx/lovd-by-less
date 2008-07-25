@@ -2,9 +2,9 @@
   <h2>Upload A Video</h2>
 
   <% form_tag @upload_url, :enctype => "multipart/form-data" do %>
-    <%= hidden_field_tag :success_redirect, "http://60.177.207.139:3000#{profile_videos_path(@p)}" %>
-    <%= hidden_field_tag :failed_redirect,  "http://60.177.207.139:3000" %>
-    <%= hidden_field_tag :postback_url, "http://60.177.207.139:3000#{profile_videos_path(@p)}" %>
+    <%= hidden_field_tag :success_redirect, "#{PROTOCOL_HOST_PORT}#{profile_videos_path(@p)}" %>
+    <%= hidden_field_tag :failed_redirect,  "#{PROTOCOL_HOST_PORT}" %>
+    <%= hidden_field_tag :postback_url, "#{PROTOCOL_HOST_PORT}#{profile_videos_path(@p)}" %>
     <%= hidden_field_tag :access_key, Ankoder::Configuration::access_key %>
     <p>
     <label for="video[filename]">Title:(optional)</label>

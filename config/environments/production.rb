@@ -16,3 +16,5 @@ config.action_controller.asset_host                  = "http://CHANGE THIS VALUE
 
 # Disable delivery errors, bad email addresses will be ignored
 # config.action_mailer.raise_delivery_errors = false
+
+PROTOCOL_HOST_PORT = ''
