@@ -5,6 +5,19 @@ class VideosController < ApplicationController
   
   def index
     @upload_url = "http://api.ankoder.com/files/upload"
+    @policy = <<END
+{
+  "expiration": "2009-01-01T12:00:00.000Z",
+  "conditions": [
+    {"bucket": "ankoder_upload" },
+    {"acl": "public-read" },
+    {"success_action_redirect": "http://www.google.com"},
+    ["starts-with", "$key", "uploads/"],
+  ]
+}
+END
+    @policy_base64 = [@policy].pack("m").gsub("\n","")
+    @signature = [HMAC::SHA1::digest('wQz2otdTCd84VPJMPFRW04L+3h9Qqgje9wRpw6Gn', @policy_base64)].pack("m").gsub("\n","")
 
     respond_to do |want|
       want.html
@@ -24,11 +37,26 @@ class VideosController < ApplicationController
     if result == 'success'
       @video = @profile.videos.build :name => message['video_name'], :video_id => message['video_id']
       if @video.save
-        flash[:notice] = 'Video successfully uploaded'
+        # flv_profile = $ankoder.profile.find_by_name 'Flash320x240'
+        # flv_profile.id # => 3
+        $ankoder.jobs.create :original_file_id => @video.video_id, :profile_id => 3, :postback_url => url_for(:action => :flv, :id => @video.id, :host => HOST_PORT)
       end
     end
 
     logger.debug @video.errors.inspect
+    render :text => nil, :layout => false
+  end
+
+  def flv
+    @video = Video.find params[:id]
+    message = ActiveSupport::JSON.decode params[:message]
+    result = message['result']
+    if result == 'success'
+      @video.flv_id =  message['convert_video_id']
+      @video.save
+    else
+      logger.debug message
+    end
     render :text => nil, :layout => false
   end
 

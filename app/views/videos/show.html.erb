@@ -12,7 +12,7 @@
         autoPlay:false,
         autoBuffering:true,
         initialScale:'scale',
-        videoFile: 'http://blip.tv/file/get/N8inpasadena-Flowers457.flv'
+        videoFile: '<%= Ankoder::Video.url_for @video.flv_id %>'
     }}
   );
 </script>

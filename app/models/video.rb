@@ -14,13 +14,13 @@ class Video < ActiveRecord::Base
   end
 
   def after_find
-    @ankoder_video = Ankoder::Video.find video_id
+    @flv = Ankoder::Video.find flv_id
   rescue
-    @ankoder_video = Ankoder::Video.new :thumb => ''
+    @flv = Ankoder::Video.new :thumb => ''
   end
 
   def thumbnail
-    @ankoder_video.thumb
+    @flv.thumb
   end
 
 end

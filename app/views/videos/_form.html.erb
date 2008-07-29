@@ -1,15 +1,13 @@
 <div id="upload_a_video">
   <h2>Upload A Video</h2>
 
-  <% form_tag @upload_url, :enctype => "multipart/form-data" do %>
-    <%= hidden_field_tag :success_redirect, "#{PROTOCOL_HOST_PORT}#{profile_videos_path(@p)}" %>
-    <%= hidden_field_tag :failed_redirect,  "#{PROTOCOL_HOST_PORT}" %>
-    <%= hidden_field_tag :postback_url, "#{PROTOCOL_HOST_PORT}#{profile_videos_path(@p)}" %>
-    <%= hidden_field_tag :access_key, Ankoder::Configuration::access_key %>
-    <p>
-    <label for="video[filename]">Title:(optional)</label>
-    <%= text_field_tag "video[filename]" %>
-    </p>
+  <% form_tag "http://s3.amazonaws.com/ankoder_upload", :method => "post", :enctype => "multipart/form-data" do %>
+    <%= hidden_field_tag 'AWSAccessKeyId', '04WAVZJW4HAZZQTWKCR2' %>
+    <%= hidden_field_tag 'acl', 'public-read' %>
+    <%= hidden_field_tag 'key', 'uploads/${filename}' %>
+    <%= hidden_field_tag 'policy', @policy_base64 %>
+    <%= hidden_field_tag 'success_action_redirect', 'http://www.google.com' %>
+    <%= hidden_field_tag 'signature', @signature %>
     <p>
     <label for="file">File:</label>
     <%= file_field_tag "file" %>
