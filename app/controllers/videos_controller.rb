@@ -11,8 +11,8 @@ class VideosController < ApplicationController
   "conditions": [
     {"bucket": "ankoder_upload" },
     {"acl": "public-read" },
-    {"success_action_redirect": "http://www.google.com"},
     ["starts-with", "$key", "uploads/"],
+    ["starts-with", "$Filename", ""],
   ]
 }
 END
