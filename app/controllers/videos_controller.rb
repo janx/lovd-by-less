@@ -29,12 +29,19 @@ class VideosController < ApplicationController
     if result == 'success'
       @video = @profile.videos.build :name => message['video_name'], :video_id => message['video_id']
       if @video.save
+        # 20 = $ankoder.profiles.find_by_name 'Flash HD'
+        $ankoder.jobs.create :original_file_id => @video.video_id, :profile_id => 20, :postback_url => "#{PROTOCOL_HOST_PORT}#{converted_profile_video_path(@profile, @video)}"
         flash[:notice] = 'Video successfully uploaded'
       end
     end
 
     logger.debug @video.errors.inspect
     render :text => nil, :layout => false
+  end
+
+  def converted
+    message = ActiveSupport::JSON.decode params[:message]
+    @video.update_attribute(:flv_id, message['convert_video_id'].to_i) if message['result'] == 'success'
   end
 
   def destroy
