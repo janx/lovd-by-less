@@ -14,7 +14,12 @@ class VideosController < ApplicationController
 
   def show
     @video = Video.find params[:id]
-    render :layout => false
+    if params[:format] == 'flv'
+      response.headers['Content-Type'] = 'video/x-flv; charset=utf-8'
+      redirect_to get_download_url(@video.flv_id)
+    else
+      render :layout => false
+    end
   end
 
   def create
@@ -49,4 +54,11 @@ class VideosController < ApplicationController
     @videos = @profile.videos.paginate(:all, :page => @page, :per_page => @per_page)
   end
 
+  def get_download_url(vid)
+    api_url = Ankoder::Video.url_for vid
+    cmd = "curl -si '#{api_url}'"
+    location = nil
+    IO.popen(cmd) do |f| location = f.readlines.find {|l| l =~ /Location/}[10..-1].strip end
+    location
+  end
 end
