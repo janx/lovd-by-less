@@ -12,7 +12,7 @@
         autoPlay:false,
         autoBuffering:true,
         initialScale:'scale',
-        videoFile: 'http://blip.tv/file/get/N8inpasadena-Flowers457.flv'
+        videoFile: '<%= formatted_profile_video_path @video.profile, @video, 'flv' %>'
     }}
   );
 </script>
