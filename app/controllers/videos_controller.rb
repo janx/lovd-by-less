@@ -1,6 +1,7 @@
 class VideosController < ApplicationController
   skip_filter :check_permissions, :login_required
   prepend_before_filter :get_profile
+  prepend_before_filter :check_signature, :only => [:create, :converted]
   before_filter :setup
   
   def index
@@ -37,8 +38,8 @@ class VideosController < ApplicationController
   end
 
   def converted
-    @video = Video.find params[:id]
     message = ActiveSupport::JSON.decode params[:message]
+    @video = Video.find params[:id]
     @video.update_attribute(:flv_id, message['convert_video_id'].to_i) if message['result'] == 'success'
     render :text => nil, :layout => false
   end
@@ -60,4 +61,8 @@ class VideosController < ApplicationController
     @videos = @profile.videos.paginate(:all, :page => @page, :per_page => @per_page)
   end
 
+  def check_signature
+    puts params.inspect
+    return false if Base64.encode64(HMAC::SHA1::digest(Ankoder::Configuration::private_key, params[:message])).strip == params[:signature]
+  end
 end
