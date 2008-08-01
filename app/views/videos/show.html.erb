@@ -5,6 +5,6 @@
 var s1 = new SWFObject('/resources/player.swf','player','400','300','9');
 s1.addParam('allowfullscreen','true');
 s1.addParam('allowscriptaccess','always');
-s1.addParam('flashvars','file=<%= formatted_profile_video_path @video.profile, @video, 'flv' %>');
+s1.addParam('flashvars','file=<%= @source %>');
 s1.write('preview');
 </script>
