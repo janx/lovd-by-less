@@ -13,14 +13,13 @@ class Video < ActiveRecord::Base
     ([profile] + profile.friends + profile.followers).each{ |p| p.feed_items << feed_item }
   end
 
-  def after_find
-    @ankoder_video = Ankoder::Video.find video_id
+  def thumbnail
+  begin
+    @ankoder_video ||= Ankoder::Video.find(video_id)
   rescue
     @ankoder_video = Ankoder::Video.new :thumb => ''
   end
-
-  def thumbnail
-    @ankoder_video.thumb
+  @ankoder_video.thumb
   end
 
 end

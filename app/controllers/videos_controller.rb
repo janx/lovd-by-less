@@ -30,7 +30,8 @@ class VideosController < ApplicationController
       @video = @profile.videos.build :name => message['video_name'], :video_id => message['video_id']
       if @video.save
         # 20 = $ankoder.profiles.find_by_name 'Flash HD'
-        $ankoder.jobs.create :original_file_id => @video.video_id, :profile_id => 20, :postback_url => "#{PROTOCOL_HOST_PORT}#{converted_profile_video_path(@profile, @video)}"
+        # 3 = $ankoder.profiles.find_by_name 'Flash320x240'
+        $ankoder.jobs.create :original_file_id => @video.video_id, :profile_id => 3, :postback_url => "#{PROTOCOL_HOST_PORT}#{converted_profile_video_path(@profile, @video)}"
         flash[:notice] = 'Video successfully uploaded'
       end
     end
@@ -42,6 +43,7 @@ class VideosController < ApplicationController
   def converted
     message = ActiveSupport::JSON.decode params[:message]
     @video.update_attribute(:flv_id, message['convert_video_id'].to_i) if message['result'] == 'success'
+    render :text => nil, :layout => false
   end
 
   def destroy
@@ -63,7 +65,7 @@ class VideosController < ApplicationController
 
   def get_download_url(vid)
     api_url = Ankoder::Video.url_for vid
-    cmd = "curl -si '#{api_url}'"
+    cmd = "curl -I '#{api_url}'"
     location = nil
     IO.popen(cmd) do |f| location = f.readlines.find {|l| l =~ /Location/}[10..-1].strip end
     location
