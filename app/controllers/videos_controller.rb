@@ -27,7 +27,7 @@ class VideosController < ApplicationController
       if @video.save
         # 20 = $ankoder.profiles.find_by_name 'Flash HD'
         # 3 = $ankoder.profiles.find_by_name 'Flash320x240'
-        $ankoder.jobs.create :original_file_id => @video.video_id, :profile_id => 3, :postback_url => "#{PROTOCOL_HOST_PORT}#{converted_profile_video_path(@profile, @video)}"
+        Ankoder::Job.create :original_file_id => @video.video_id, :profile_id => 3, :postback_url => "#{PROTOCOL_HOST_PORT}#{converted_profile_video_path(@profile, @video)}"
         flash[:notice] = 'Video successfully uploaded'
       end
     end
