@@ -1,18 +1,10 @@
 <h1><%= @video.name %></h1>
-<div id="player"></div>
+<div id='preview'></div>
 
 <script type='text/javascript'>
-  flashembed("player",
-    {
-      src:'/resources/FlowPlayerDark.swf',
-      width:400,
-      height:290
-    },
-    {config: {
-        autoPlay:false,
-        autoBuffering:true,
-        initialScale:'scale',
-        videoFile: '<%= formatted_profile_video_path @video.profile, @video, 'flv' %>'
-    }}
-  );
+var s1 = new SWFObject('/resources/player.swf','player','400','300','9');
+s1.addParam('allowfullscreen','true');
+s1.addParam('allowscriptaccess','always');
+s1.addParam('flashvars','file=<%= formatted_profile_video_path @video.profile, @video, 'flv' %>');
+s1.write('preview');
 </script>

@@ -16,9 +16,10 @@ class VideosController < ApplicationController
     @video = Video.find params[:id]
     if params[:format] == 'flv'
       response.headers['Content-Type'] = 'video/x-flv; charset=utf-8'
+#      response.headers['Content-Type'] = 'text/html; charset=utf-8'
       redirect_to get_download_url(@video.flv_id)
     else
-      render :layout => false
+      #render :layout => false
     end
   end
 
@@ -65,9 +66,11 @@ class VideosController < ApplicationController
 
   def get_download_url(vid)
     api_url = Ankoder::Video.url_for vid
-    cmd = "curl -I '#{api_url}'"
-    location = nil
-    IO.popen(cmd) do |f| location = f.readlines.find {|l| l =~ /Location/}[10..-1].strip end
-    location
+#    cmd = "curl -I '#{api_url}'"
+#    location = nil
+#    IO.popen(cmd) do |f| location = f.readlines.find {|l| l =~ /Location/}[10..-1].strip end
+#    location
+#    '/resources/test.mp4'
+    api_url
   end
 end
