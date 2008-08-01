@@ -37,6 +37,7 @@ class VideosController < ApplicationController
   end
 
   def converted
+    @video = Video.find params[:id]
     message = ActiveSupport::JSON.decode params[:message]
     @video.update_attribute(:flv_id, message['convert_video_id'].to_i) if message['result'] == 'success'
     render :text => nil, :layout => false
