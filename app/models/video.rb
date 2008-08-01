@@ -14,12 +14,15 @@ class Video < ActiveRecord::Base
   end
 
   def thumbnail
-  begin
-    @ankoder_video ||= Ankoder::Video.find(video_id)
-  rescue
-    @ankoder_video = Ankoder::Video.new :thumb => ''
-  end
-  @ankoder_video.thumb
+#--------------------------------------------------
+#   begin
+#     @ankoder_video ||= Ankoder::Video.find(video_id)
+#   rescue
+#     @ankoder_video = Ankoder::Video.new :thumb => ''
+#   end
+#   @ankoder_video.thumb
+#-------------------------------------------------- 
+    ''
   end
 
 end
