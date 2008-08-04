@@ -53,9 +53,9 @@ li				{list-style: none;}
 
 #front_left_column		{width: 285px; margin: 25px 35px 15px 0;}
 #front_middle_column	{width: 165px; margin: 25px 25px 15px 0; }
-.front_right_column		{width: 155px; margin: 25px 0 0 0;}
+.front_right_column		{width: 149px; margin: 25px 0 0 0;}
 .front_right_column img	{margin: 0 15px 0px 0; font-size: 12px;}
-.front_right_most_column {width: 143px; margin: 25px 0 0 0;}
+.front_right_most_column {width: 149px; margin: 25px 0 0 0;}
 .image			{background: #222; margin: 0 12px 20px 0; }
 .image img		{margin: 10px;}
 .small_down_image div		{width: 100px; overflow: hidden; height: 100px;}
