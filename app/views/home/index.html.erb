@@ -26,12 +26,24 @@
       <%= render :partial => 'profiles/newest_member', :collection => new_members %>
     </div>
 
-    <div class="front_right_column right">
+    <div class="front_right_column left">
       <h2>Newest Pictures</h2>
       <% newest_pictures.each do |picture|%>
       <div class="image left small_down_image">
         <div>
           <%= link_to image(picture, :small), profile_photos_path(picture.profile) %>
+        </div>
+      </div>
+      <% end %>
+      <div class="clear"></div>  
+    </div>
+
+    <div class="front_right_most_column right">
+      <h2>Newest Videos</h2>
+      <% Video.latest.each do |video|%>
+      <div class="image left small_down_image">
+        <div>
+          <%= link_to image_tag(video.thumbnail), profile_videos_path(video.profile) %>
         </div>
       </div>
       <% end %>

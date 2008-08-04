@@ -1,4 +1,9 @@
 class Video < ActiveRecord::Base
+  named_scope :latest, lambda {|*args|
+    limit = args[0]||12
+    {:order => 'created_at desc', :limit => limit}
+  }
+
   has_many :comments, :as => :commentable, :dependent => :destroy, :order => 'created_at ASC'
 
   belongs_to :profile
