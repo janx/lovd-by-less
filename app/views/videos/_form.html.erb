@@ -20,9 +20,8 @@
   <div>
     <form id="form1" action="/" method="post" enctype="multipart/form-data">
       <fieldset class="flash" id="fsUploadProgress">
-      <legend>Upload Queue</legend>
+        <legend>Upload Queue</legend>
       </fieldset>                                                
-
       <div id="divStatus">0 Files Uploaded</div>                         
       <div>   
         <input type="button" value="Upload file (Max 100 MB)" onclick="swfu.selectFiles()" style="font-size: 8pt;" />
@@ -42,12 +41,15 @@
       // Backend Settings
       upload_url : "<%= @upload_url %>",
       file_post_name : 'file',
-      //post_params: {"AWSAccessKeyId" : "04WAVZJW4HAZZQTWKCR2" },
+      post_params: {"access_key" : "<%= Ankoder::Configuration::access_key %>",
+      //"success_redirect" : "<%= PROTOCOL_HOST_PORT + profile_videos_path(@p) %>",
+      "failed_redirect" : "<%= PROTOCOL_HOST_PORT %>",
+      "postback_url" : "<%= PROTOCOL_HOST_PORT + profile_videos_path(@p) %>" },
       flash_url : "/resources/swfupload_f9.swf",
 
       // File Upload Settings
       file_size_limit : "1024000", //1000MB
-      file_types : "*.jpg;*.wmv",
+      file_types : "*.avi;*.wmv",
       file_types_description : "video files only",
       file_upload_limit : "3",
       file_queue_limit : "3",
@@ -74,22 +76,8 @@
 
       // Debug Settings
 //      debug: true,
-//      debug_handler: swfDebug
+//    debug_handler: swfDebug
     });
   };
 
-
-
-//upload.customSettings.progressTarget = "fsUploadProgress_"+index; // Add an additional setting that will later be used by the handler.
-//
-//upload.customSettings.cancelButtonId = "btnCancel"+index; // Add an additional setting that will later be used by the handler.
-//btnSelect = document.getElementById("btnSelect");
-//
-//btnCancel = document.getElementById("btnCancel");
-//YE.addListener(btnSelect, "click", upload.selectFiles, upload, true);
-//YE.addListener(btnCancel, "click", upload.cancelQueue, upload, true);
-//document.getElementById(fileUIElement).style.display = "none";
-//document.getElementById(flashUIElement).style.display = "block";
-//};
-//YE.onDOMReady(init);
 <% end %>
