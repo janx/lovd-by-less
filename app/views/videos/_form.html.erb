@@ -17,8 +17,23 @@
   <div class="clear"></div>
 </div>
 
-<% javascript_tag do %>
+<script type="text/javascript">
   var swfu;
+
+  function uploadSuccess(file, serverData) {
+    try {
+      var progress = new FileProgress(file, this.customSettings.progressTarget);
+      progress.setComplete();
+      progress.setStatus("Complete.");
+      progress.toggleCancel(false);
+
+      if (serverData.indexOf("success") == 0) {
+        new Ajax.Updater($('video_wall'), '<%= wall_profile_videos_path(@p) %>');
+      }
+    } catch (ex) {
+      this.debug(ex);
+    }
+  }
 
   window.onload = function() {
     swfu = new SWFUpload({
@@ -49,7 +64,7 @@
       upload_error_handler : uploadError,
       upload_success_handler : uploadSuccess,
       upload_complete_handler : uploadComplete,
-      queue_complete_handler : queueComplete,  // Queue plugin event
+      queue_complete_handler : queueComplete  // Queue plugin event
 
 //      ui_container_id : flashUIElement,
 //      degraded_container_id : fileUIElement,
@@ -58,19 +73,4 @@
     });
   };
 
-  function uploadSuccess(file, serverData) {
-    try {
-      var progress = new FileProgress(file, this.customSettings.progressTarget);
-      progress.setComplete();
-      progress.setStatus("Complete.");
-      progress.toggleCancel(false);
-
-      if (serverData.indexOf("success") == 0) {
-        new Ajax.Updater($('video_wall'), '<%= wall_profile_videos_path(@p) %>');
-      }
-    } catch (ex) {
-      this.debug(ex);
-    }
-  }
-
-<% end %>
+</script>
