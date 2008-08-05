@@ -1,24 +1,8 @@
 <div id="upload_a_video">
   <h2>Upload A Video</h2>
 
-  <% form_tag @upload_url, :enctype => "multipart/form-data" do %>
-    <%= hidden_field_tag :success_redirect, "#{PROTOCOL_HOST_PORT}#{profile_videos_path(@p)}" %>
-    <%= hidden_field_tag :failed_redirect,  "#{PROTOCOL_HOST_PORT}" %>
-    <%= hidden_field_tag :postback_url, "#{PROTOCOL_HOST_PORT}#{profile_videos_path(@p)}" %>
-    <%= hidden_field_tag :access_key, Ankoder::Configuration::access_key %>
-    <p>
-    <label for="video[filename]">Title:(optional)</label>
-    <%= text_field_tag "video[filename]" %>
-    </p>
-    <p>
-    <label for="file">File:</label>
-    <%= file_field_tag "file" %>
-    </p>
-    <%= submit_tag "Upload" %>
-  <% end %>
-
   <div>
-    <form id="form1" action="/" method="post" enctype="multipart/form-data">
+    <form id="form" action="/" method="post" enctype="multipart/form-data">
       <fieldset class="flash" id="fsUploadProgress">
         <legend>Upload Queue</legend>
       </fieldset>                                                
@@ -38,7 +22,6 @@
 
   window.onload = function() {
     swfu = new SWFUpload({
-      // Backend Settings
       upload_url : "<%= @upload_url %>",
       file_post_name : 'file',
       post_params: {"access_key" : "<%= Ankoder::Configuration::access_key %>",
@@ -47,19 +30,17 @@
       "postback_url" : "<%= PROTOCOL_HOST_PORT + profile_videos_path(@p) %>" },
       flash_url : "/resources/swfupload_f9.swf",
 
-      // File Upload Settings
       file_size_limit : "1024000", //1000MB
       file_types : "*.avi;*.wmv",
       file_types_description : "video files only",
-      file_upload_limit : "3",
-      file_queue_limit : "3",
+      file_upload_limit : "5",
+      file_queue_limit : "5",
 
       custom_settings : {
         progressTarget : "fsUploadProgress",
         cancelButtonId : "btnCancel"
       },
 
-      // The event handler functions are defined in handlers.js
       file_queued_handler : fileQueued,
       file_queue_error_handler : fileQueueError,
       file_dialog_complete_handler : fileDialogComplete,
@@ -70,14 +51,25 @@
       upload_complete_handler : uploadComplete,
       queue_complete_handler : queueComplete,  // Queue plugin event
 
-      // UI Settings
 //      ui_container_id : flashUIElement,
 //      degraded_container_id : fileUIElement,
-
-      // Debug Settings
 //      debug: true,
-//    debug_handler: swfDebug
+//      debug_handler: swfDebug
     });
   };
 
+  function uploadSuccess(file, serverData) {
+    try {
+      var progress = new FileProgress(file, this.customSettings.progressTarget);
+      progress.setComplete();
+      progress.setStatus("Complete.");
+      progress.toggleCancel(false);
+
+      if (serverData.indexOf("success") == 0) {
+        new Ajax.Updater($('video_wall'), '<%= wall_profile_videos_path(@p) %>');
+      }
+    } catch (ex) {
+      this.debug(ex);
+    }
+  }
 <% end %>

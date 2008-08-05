@@ -13,6 +13,12 @@ class VideosController < ApplicationController
     end
   end
 
+  def wall
+    respond_to do |want|
+      want.js { render :partial => 'video', :collection => @videos }
+    end
+  end
+
   def show
     @video = Video.find params[:id]
     @source = Ankoder::Video.url_for(@video.flv_id)+'&type=flv'

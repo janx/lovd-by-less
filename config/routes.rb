@@ -5,7 +5,7 @@ ActionController::Routing::Routes.draw do |map|
   end
 
   map.resources :profiles, :member=>{:delete_icon=>:post}, :collection=>{:search=>:get}, :has_many => [:friends, :blogs, :photos, :comments, :feed_items, :messages] do |profiles|
-    profiles.resources :videos, :member => {:converted => :post}
+    profiles.resources :videos, :collection => {:wall => :post}, :member => {:converted => :post}
   end
 
   map.resources :messages, :collection => {:sent => :get}
