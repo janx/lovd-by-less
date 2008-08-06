@@ -18,13 +18,20 @@ class Video < ActiveRecord::Base
     ([profile] + profile.friends + profile.followers).each{ |p| p.feed_items << feed_item }
   end
 
+  # use delegate insteand of after_create
+  # because thumbnail may not be ok on ankoder only few
+  # seconds after you created video
   def thumbnail
-  begin
-    @ankoder_video ||= Ankoder::Video.find(video_id)
-  rescue
-    @ankoder_video = Ankoder::Video.new :thumb => ''
-  end
-  @ankoder_video.thumb
+    if thumbnail_url.blank?
+      begin
+        @ankoder_video ||= Ankoder::Video.find(video_id)
+      rescue
+        @ankoder_video = Ankoder::Video.new :thumb => ''
+      end
+      self.thumbnail_url = @ankoder_video.thumb
+      save
+    end
+    thumbnail_url
   end
 
 end
