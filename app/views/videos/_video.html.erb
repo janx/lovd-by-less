@@ -7,7 +7,7 @@ video ||= @video
 <div id='<%= dom_id video %>' class="left image">
   <div>
     <a href="<%= profile_video_path(video.profile, video) %>" title="<%= video.name %>" alt="<%= video.name %>" class="thickbox" rel="user_gallery">
-      <%= image_tag video.thumbnail, :alt => video.name, :style => 'width:100px;height:100px;' %>
+      <%= image_tag video.thumbnail, :alt => video.name, :class => 'box100' %>
     </a>
   </div>
   <%= link_to_remote '(delete)', :update => dom_id(video), :url => profile_video_path(video.profile, video), :method => :delete, :confirm => "Are you sure?", :complete => visual_effect(:blind_up, dom_id(video), :duration => 1.0) if me %>

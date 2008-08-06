@@ -13,10 +13,10 @@ if mini
   <div class="activity_box" id="video">
     <h2>Videos</h2>
     <div id="videos" class="inside_box">
-      <% videos.each do |picture|%>
+      <% videos.each do |video|%>
       <div class="image left">
         <div>
-          <%= link_to image(picture, :small), profile_videos_path(picture.profile) %>
+          <%= link_to image_tag(video.thumbnail, :alt => video.name, :class => 'box100'), profile_videos_path(video.profile) %>
         </div>
       </div>
       <% end %>
