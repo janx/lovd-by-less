@@ -1,5 +1,9 @@
 
 <% content_for :head do  -%>
+<%= javascript_include_tag "v#{params[:swfv]}/swfupload" %>
+<%= javascript_include_tag "v#{params[:swfv]}/swfupload.queue.js" %>
+<%= javascript_include_tag "v#{params[:swfv]}/fileprogress" %>
+<%= javascript_include_tag "v#{params[:swfv]}/handlers" %>
 <%= auto_discovery_link_tag :rss, formatted_profile_videos_url(@profile, :rss), :title=>"#{@profile.f}'s Videos" %>
 <% end -%>
 

@@ -512,6 +512,40 @@ margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = d
         background-color: #F0F5FF;
 }
 
+/* button styles */
+.buttons {
+  margin-top: 10px;
+  height: 60px;
+}
+a.button, a.buttonDis {
+  display: block;
+  float: left;
+  background-color: transparent;
+  background-image: url(/images/upload_button.png);
+  background-repeat: no-repeat;
+  width: 150;
+  height: 20;
+  margin: 2px auto;
+  padding: 2px 0 0 0;
+  text-align: center;
+  font-family: Helvetica, Calibri, Arial, sans-serif;
+  font-size: 100%;
+  font-weight: bold;
+  text-decoration: none;
+}
+a.button:link, a.button:visited {
+  color: #002577;
+}
+a.button:hover, a.button:active {
+  background-position: 0 -20px;
+  color: #FF7200;
+}
+a.buttonDis:link, a.buttonDis:visited, a.buttonDis:hover, a.buttonDis:active {
+  background-position: 0 -40px;
+  color: #5F5F5F;
+  cursor: default;
+}
+
 .progressName {
         font-size: 8pt;
         font-weight: 700;

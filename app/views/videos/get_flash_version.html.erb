@@ -1,0 +1,8 @@
+<script type="text/javascript">
+  if(FlashDetect.major == '10') {
+    window.location = '<%= profile_videos_url @profile, :swfv => 10 %>'
+  } else {
+    window.location = '<%= profile_videos_url @profile, :swfv => 9 %>'
+  }
+</script>
+

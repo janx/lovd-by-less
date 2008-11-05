@@ -8,7 +8,7 @@ class VideosController < ApplicationController
     @upload_url = "http://api.ankoder.com/files/upload"
 
     respond_to do |want|
-      want.html
+      want.html { params[:swfv] || render(:template => 'videos/get_flash_version') }
       want.rss {render :layout => false}
     end
   end

@@ -7,9 +7,14 @@
         <legend>Upload Queue</legend>
       </fieldset>                                                
       <div id="divStatus">0 Files Uploaded</div>                         
-      <div>   
-        <input type="button" value="Upload file (Max 100 MB)" onclick="swfu.selectFiles()" style="font-size: 8pt;" />
-        <input id="btnCancel" type="button" value="Cancel All Uploads" onclick="swfu.cancelQueue();" disabled="disabled" style="font-size: 8pt;" />
+
+      <div class="buttons">   
+        <% if params[:swfv] == '10' %>
+        <span id="spanButtonPlaceHolder"></span>
+        <% else %>
+        <a href="javascript:return false;" class="button" id="btnUpload" onclick="swfu.selectFiles();">Upload (Max 100MB)</a>
+        <% end %>
+        <a href="javascript:return false;" class="button" id="btnCancel" onclick="swfu.cancelQueue();" disabled="disabled">Cancel All Uploads</a>
       </div>
     </form>
   </div>
@@ -35,26 +40,36 @@
     }
   }
 
-  window.onload = function() {
-    swfu = new SWFUpload({
+  function init() {
+    var settings = {
+      flash_url : "/resources/v<%= params[:swfv] %>/swfupload.swf",
       upload_url : "<%= @upload_url %>",
       file_post_name : 'file',
       post_params: {"access_key" : "<%= Ankoder::Configuration::access_key %>",
       //"success_redirect" : "<%= PROTOCOL_HOST_PORT + profile_videos_path(@p) %>",
       "failed_redirect" : "<%= PROTOCOL_HOST_PORT %>",
       "postback_url" : "<%= PROTOCOL_HOST_PORT + profile_videos_path(@p) %>" },
-      flash_url : "/resources/swfupload_f9.swf",
 
-      file_size_limit : "1024000", //1000MB
-      file_types : "*.avi;*.wmv;*.mov;*.mp4;*.mpg;*.3gp;*.flv",
+      file_size_limit : "100 MB", //100MB
+      file_types : "*.avi;*.wmv;*.mov;*.mp4;*.mpg;*.3gp;*.flv,*.rmvb,*.rm",
       file_types_description : "video files only",
       file_upload_limit : "5",
-      file_queue_limit : "5",
+      file_queue_limit : "0",
 
       custom_settings : {
         progressTarget : "fsUploadProgress",
         cancelButtonId : "btnCancel"
       },
+
+      // Button settings
+      button_image_url: "/images/upload_button.png",     // Relative to the Flash file
+      button_width: "150",
+      button_height: "20",
+      button_placeholder_id: "spanButtonPlaceHolder",
+      button_text: '<span class="theFont">Upload (Max 100MB)</span>',
+      button_text_style: ".theFont { font-size: 12; }",
+      button_text_left_padding: 12,
+      button_text_top_padding: 1,
 
       file_queued_handler : fileQueued,
       file_queue_error_handler : fileQueueError,
@@ -70,7 +85,15 @@
 //      degraded_container_id : fileUIElement,
 //      debug: true,
 //      debug_handler: swfDebug
-    });
+    };
+
+    swfu = new SWFUpload(settings);
   };
+
+  if(document.addEventListener) {
+    document.addEventListener("DOMContentLoaded", init, false);
+  } else {
+    window.onload = init;
+  }
 
 </script>
